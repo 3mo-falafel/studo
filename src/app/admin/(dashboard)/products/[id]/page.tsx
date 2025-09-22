@@ -3,7 +3,8 @@ import { revalidatePath } from 'next/cache'
 import { mkdir, writeFile, unlink } from 'fs/promises'
 import path from 'path'
 
-interface Props { params: { id: string } }
+// Next.js 15 can pass params as a Promise in server components
+interface Props { params: Promise<{ id: string }> }
 
 async function updateProduct(formData: FormData) {
   'use server'
@@ -24,7 +25,8 @@ async function updateProduct(formData: FormData) {
 }
 
 export default async function ProductEditPage({ params }: Props) {
-  const id = Number(params.id)
+  const { id: idParam } = await params
+  const id = Number(idParam)
   const [product, categories] = await Promise.all([
     prisma.product.findUnique({ where: { id }, include: { category: true, images: true } }),
     prisma.category.findMany({ orderBy: { name: 'asc' } }),
