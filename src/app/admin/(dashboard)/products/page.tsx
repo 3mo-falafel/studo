@@ -78,7 +78,8 @@ export default async function ProductsPage() {
               <tr key={p.id} className="border-t">
                 <td className="p-3"><a className="text-blue-600 hover:underline" href={`/admin/products/${p.id}`}>{p.name}</a></td>
                 <td className="p-3">{p.category.name}</td>
-                <td className="p-3">${'{'}p.originalPrice{'}'} → {p.discountPrice ?? '-'}</td>
+                <td className="p-3">${'{'}p.originalPrice.toString(){'}'} → {p.discountPrice ? p.discountPrice.toString() : '-'}
+                </td>
                 <td className="p-3">{p.isRecentlyAdded ? 'Yes' : 'No'}</td>
                 <td className="p-3 text-right">
                   <form action={async () => deleteProduct(p.id)}>
