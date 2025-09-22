@@ -23,9 +23,9 @@ param(
 )
 
 function Write-Info { param([string]$Message) Write-Host "[INFO] $Message" -ForegroundColor Cyan }
-function Write-Ok { param([string]$Message) Write-Host "[OK] $Message" -ForegroundColor Green }
+function Write-Ok   { param([string]$Message) Write-Host "[OK]  $Message" -ForegroundColor Green }
 function Write-Warn { param([string]$Message) Write-Host "[WARN] $Message" -ForegroundColor Yellow }
-function Write-Err { param([string]$Message) Write-Host "[ERR] $Message" -ForegroundColor Red }
+function Write-Err  { param([string]$Message) Write-Host "[ERR] $Message" -ForegroundColor Red }
 
 $ErrorActionPreference = 'Stop'
 
@@ -41,7 +41,7 @@ try {
         git init | Out-Null
     }
 
-    # Ensure main branch exists and is checked out
+    # Ensure target branch exists and is checked out
     try { git rev-parse --verify $Branch 2>$null | Out-Null; git checkout $Branch | Out-Null } catch { git checkout -b $Branch | Out-Null }
 
     $status = git status --porcelain
@@ -70,13 +70,13 @@ catch {
     exit 1
 }
 
-# 2) Prepare remote deployment script content
-$remoteScript = @"
+# 2) Prepare remote deployment script content (single-quoted here-string, placeholders)
+$remoteScript = @'
 set -e
-REPO_URL="$RepoUrl"
-APP_DIR="$AppDir"
-APP_NAME="$AppName"
-BRANCH="$Branch"
+REPO_URL="__REPO_URL__"
+APP_DIR="__APP_DIR__"
+APP_NAME="__APP_NAME__"
+BRANCH="__BRANCH__"
 
 # Ensure base tools
 if ! command -v git >/dev/null 2>&1; then apt-get update -y && apt-get install -y git; fi
@@ -84,15 +84,19 @@ if ! command -v node >/dev/null 2>&1; then curl -fsSL https://deb.nodesource.com
 if ! command -v pm2 >/dev/null 2>&1; then npm i -g pm2; fi
 
 mkdir -p /var/www
+# If APP_DIR is an absolute path, ensure parent exists and clone there
 if [ -d "$APP_DIR/.git" ]; then
   cd "$APP_DIR"
   git fetch origin
   git reset --hard origin/$BRANCH
 else
-  cd /var/www
-  rm -rf "$APP_DIR" 2>/dev/null || true
-  git clone "$REPO_URL" "$APP_DIR"
-  cd "$APP_DIR"
+  PARENT_DIR=$(dirname "$APP_DIR")
+  BASENAME=$(basename "$APP_DIR")
+  mkdir -p "$PARENT_DIR"
+  cd "$PARENT_DIR"
+  rm -rf "$BASENAME" 2>/dev/null || true
+  git clone "$REPO_URL" "$BASENAME"
+  cd "$BASENAME"
 fi
 
 # Install/build (safe to re-run)
@@ -107,8 +111,8 @@ if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
 else
   PORT=
   # Preserve configured PORT if present in .env, default to 3002 otherwise
-  if [ -f .env ] && grep -q '^PORT=' .env; then
-    PORT=$(grep '^PORT=' .env | cut -d'=' -f2)
+  if [ -f .env ]; then
+    PORT=$(awk -F'=' '/^PORT=/{print $2}' .env | tr -d '\r')
   fi
   PORT=${PORT:-3002}
   NODE_ENV=production PORT=$PORT pm2 start npm --name "$APP_NAME" -- start
@@ -117,7 +121,13 @@ pm2 save
 
 # Health check
 curl -s -o /dev/null -w "HTTP:%{http_code}\n" http://127.0.0.1:${PORT:-3002} || true
-"@
+'@
+
+# Replace placeholders with actual values
+$remoteScript = $remoteScript.Replace('__REPO_URL__', $RepoUrl)
+$remoteScript = $remoteScript.Replace('__APP_DIR__', $AppDir)
+$remoteScript = $remoteScript.Replace('__APP_NAME__', $AppName)
+$remoteScript = $remoteScript.Replace('__BRANCH__', $Branch)
 
 # 3) Ship and run remote script
 Write-Info "Deploying to $VpsUser@$VpsIp ... (you may be prompted for the server password)"
