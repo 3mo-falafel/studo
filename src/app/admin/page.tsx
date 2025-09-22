@@ -1,9 +1,14 @@
 import { prisma } from '@/lib/db'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 // Force dynamic rendering so middleware runs
 export const dynamic = 'force-dynamic'
 
 export default async function AdminHome() {
+  const cookieStore = await cookies()
+  const session = cookieStore.get('admin_session')?.value
+  if (session !== 'ok') redirect('/admin/login')
   const [products, categories, banners] = await Promise.all([
     prisma.product.count(),
     prisma.category.count(),
