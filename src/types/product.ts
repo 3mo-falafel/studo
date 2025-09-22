@@ -1,13 +1,32 @@
 export type Product = {
-  title: string;
-  reviews: number;
-  price: number;
-  discountedPrice: number;
   id: number;
-  // Slug of the category this product belongs to, e.g. "ipad-accessories"
-  categorySlug?: string;
-  imgs?: {
-    thumbnails: string[];
-    previews: string[];
+  name: string;
+  slug: string;
+  description: string;
+  shortDescription?: string;
+  originalPrice: number;
+  discountPrice?: number;
+  isRecentlyAdded: boolean;
+  isFeatured: boolean;
+  isActive: boolean;
+  stockQuantity: number;
+  sku?: string;
+  weight?: number;
+  dimensions?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  sortOrder: number;
+  categoryId: number;
+  category?: {
+    id: number;
+    name: string;
+    slug: string;
   };
+  images?: {
+    id: number;
+    url: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
 };

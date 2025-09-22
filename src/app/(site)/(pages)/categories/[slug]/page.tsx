@@ -1,9 +1,9 @@
 "use client";
-import React, { useMemo, useState } from "react";
-import shopData from "@/components/Shop/shopData";
+import React, { useState } from "react";
 import SingleGridItem from "@/components/Shop/SingleGridItem";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useProducts } from "@/hooks/useProducts";
 
 const humanize = (slug: string) =>
   slug
@@ -16,18 +16,42 @@ export default function CategoryPage() {
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
 
-  const products = useMemo(() => {
+  // For now, we'll fetch all products and filter by category slug
+  // In a real app, you'd want to pass the category ID to the API
+  const { products: allProducts, loading, error } = useProducts();
+  
+  const products = allProducts.filter((p) => {
     const [min, max] = priceRange;
-    return shopData.filter((p) => {
-      const inCategory = p.categorySlug === slug;
-      const price = p.discountedPrice ?? p.price;
-      return inCategory && price >= min && price <= max;
-    });
-  }, [slug, priceRange]);
+    const inCategory = p.category?.slug === slug;
+    const price = p.discountPrice ?? p.originalPrice;
+    return inCategory && price >= min && price <= max;
+  });
 
-  // Simple price filter derived from existing PriceDropdown with callbacks
-  // Reuse UI of PriceDropdown by wrapping it and intercepting its internal state via props would require changes.
-  // Instead, inline a tiny slider here to avoid refactor of PriceDropdown.
+  if (loading) {
+    return (
+      <section className="pt-36 pb-20">
+        <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue mx-auto"></div>
+            <p className="mt-2 text-gray-600">Loading products...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="pt-36 pb-20">
+        <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
+          <div className="text-center py-8">
+            <p className="text-red-600">Error loading products: {error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="pt-36 pb-20">
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">

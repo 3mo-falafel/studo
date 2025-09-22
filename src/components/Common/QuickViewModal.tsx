@@ -33,8 +33,15 @@ const QuickViewModal = () => {
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        ...product,
+        id: product.id,
+        title: product.name,
+        price: product.originalPrice,
+        discountedPrice: product.discountPrice || product.originalPrice,
         quantity,
+        imgs: {
+          thumbnails: product.images?.map(img => img.url) || [],
+          previews: product.images?.map(img => img.url) || []
+        }
       })
     );
 
@@ -94,7 +101,7 @@ const QuickViewModal = () => {
             <div className="max-w-[526px] w-full">
               <div className="flex gap-5">
                 <div className="flex flex-col gap-5">
-                  {product.imgs.thumbnails?.map((img, key) => (
+                  {product.images?.map((img, key) => (
                     <button
                       onClick={() => setActivePreview(key)}
                       key={key}
@@ -103,8 +110,8 @@ const QuickViewModal = () => {
                       }`}
                     >
                       <Image
-                        src={img || ""}
-                        alt="thumbnail"
+                        src={img.url || ""}
+                        alt={product.name}
                         width={61}
                         height={61}
                         className="aspect-square"
@@ -138,7 +145,7 @@ const QuickViewModal = () => {
                     </button>
 
                     <Image
-                      src={product?.imgs?.previews?.[activePreview]}
+                      src={product?.images?.[activePreview]?.url || "/images/products/product-1-bg-1.png"}
                       alt="products-details"
                       width={400}
                       height={400}
@@ -154,7 +161,7 @@ const QuickViewModal = () => {
               </span>
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
-                {product.title}
+                {product.name}
               </h3>
 
               <div className="flex flex-wrap items-center gap-5 mb-6">
@@ -315,11 +322,13 @@ const QuickViewModal = () => {
 
                   <span className="flex items-center gap-2">
                     <span className="font-semibold text-dark text-xl xl:text-heading-4">
-                      ${product.discountedPrice}
+                      ${product.discountPrice || product.originalPrice}
                     </span>
-                    <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
-                      ${product.price}
-                    </span>
+                    {product.discountPrice && (
+                      <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
+                        ${product.originalPrice}
+                      </span>
+                    )}
                   </span>
                 </div>
 

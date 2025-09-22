@@ -11,16 +11,15 @@ const MailSuccess = () => {
           <div className="bg-white rounded-xl shadow-1 px-4 py-10 sm:py-15 lg:py-20 xl:py-25">
             <div className="text-center">
               <h2 className="font-bold text-blue text-4xl lg:text-[45px] lg:leading-[57px] mb-5">
-                Successful!
+                Order Successful!
               </h2>
 
               <h3 className="font-medium text-dark text-xl sm:text-2xl mb-3">
-                Your message sent successfully
+                Your order has been successfully sent.
               </h3>
 
               <p className="max-w-[491px] w-full mx-auto mb-7.5">
-                Thank you so much for your message. We check e-mail frequently
-                and will try our best to respond to your inquiry.
+                Thank you for your order! We have received your order details and will contact you via WhatsApp to confirm the delivery details. We will process your order as soon as possible.
               </p>
 
               <Link
