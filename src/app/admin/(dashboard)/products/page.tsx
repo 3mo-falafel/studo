@@ -1,6 +1,9 @@
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
+// Force dynamic rendering so middleware runs
+export const dynamic = 'force-dynamic'
+
 async function addProduct(formData: FormData) {
   'use server'
   const name = String(formData.get('name') || '').trim()

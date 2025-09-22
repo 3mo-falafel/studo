@@ -1,6 +1,9 @@
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
+// Force dynamic rendering so middleware runs
+export const dynamic = 'force-dynamic'
+
 async function addBanner(formData: FormData) {
   'use server'
   const imageUrl = String(formData.get('imageUrl') || '').trim()

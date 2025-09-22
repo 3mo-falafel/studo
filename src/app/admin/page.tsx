@@ -1,5 +1,8 @@
 import { prisma } from '@/lib/db'
 
+// Force dynamic rendering so middleware runs
+export const dynamic = 'force-dynamic'
+
 export default async function AdminHome() {
   const [products, categories, banners] = await Promise.all([
     prisma.product.count(),
