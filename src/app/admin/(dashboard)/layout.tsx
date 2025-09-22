@@ -13,15 +13,10 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
           <Link className="hover:underline" href="/admin/categories">Categories</Link>
           <Link className="hover:underline" href="/admin/products">Products</Link>
           <Link className="hover:underline" href="/admin/banners">Banners</Link>
+          <Link className="hover:underline text-red-300" href="/admin/logout">Sign out</Link>
         </nav>
       </aside>
       <main className="p-6 bg-gray-50">
-        <div className="flex items-center justify-between mb-6">
-          <div />
-          <form action={async () => { 'use server'; const { cookies } = await import('next/headers'); const { redirect } = await import('next/navigation'); (await cookies()).delete('admin_session'); redirect('/admin/login') }}>
-            <button className="text-sm text-gray-600 hover:text-gray-900">Sign out</button>
-          </form>
-        </div>
         {children}
       </main>
     </div>

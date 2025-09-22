@@ -33,9 +33,20 @@ model Product {
   name             String
   slug             String         @unique
   description      String
+  shortDescription String?
   originalPrice    Decimal        @db.Decimal(10,2)
   discountPrice    Decimal?       @db.Decimal(10,2)
   isRecentlyAdded  Boolean        @default(false)
+  isFeatured       Boolean        @default(false)
+  isActive         Boolean        @default(true)
+  stockQuantity    Int            @default(0)
+  sku              String?        @unique
+  weight           Decimal?       @db.Decimal(8,3)
+  dimensions       String?
+  seoTitle         String?
+  seoDescription   String?
+  seoKeywords      String?
+  sortOrder        Int            @default(0)
   category         Category       @relation(fields: [categoryId], references: [id])
   categoryId       Int
   images           ProductImage[]

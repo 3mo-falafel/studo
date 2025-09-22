@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import "../css/euclid-circular-a-font.css";
-import "../css/style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
@@ -17,7 +15,7 @@ import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import BackgroundWaves from "@/components/Common/BackgroundWaves";
 
-export default function RootLayout({
+export default function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -55,33 +53,31 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
-        {loading ? (
-          <PreLoader />
-        ) : (
-          <>
-            {/* Decorative brand waves background */}
-            <BackgroundWaves />
-            <ReduxProvider>
-              <CartModalProvider>
-                <ModalProvider>
-                  <PreviewSliderProvider>
-                    <Header />
-                    {children}
+    <>
+      {loading ? (
+        <PreLoader />
+      ) : (
+        <>
+          {/* Decorative brand waves background */}
+          <BackgroundWaves />
+          <ReduxProvider>
+            <CartModalProvider>
+              <ModalProvider>
+                <PreviewSliderProvider>
+                  <Header />
+                  {children}
 
-                    <QuickViewModal />
-                    <CartSidebarModal />
-                    <PreviewSliderModal />
-                  </PreviewSliderProvider>
-                </ModalProvider>
-              </CartModalProvider>
-            </ReduxProvider>
-            <ScrollToTop />
-            <Footer />
-          </>
-        )}
-      </body>
-    </html>
+                  <QuickViewModal />
+                  <CartSidebarModal />
+                  <PreviewSliderModal />
+                </PreviewSliderProvider>
+              </ModalProvider>
+            </CartModalProvider>
+          </ReduxProvider>
+          <ScrollToTop />
+          <Footer />
+        </>
+      )}
+    </>
   );
 }
