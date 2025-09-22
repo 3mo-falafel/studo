@@ -137,7 +137,8 @@ Write-Info "Deploying to $VpsUser@$VpsIp ... (you may be prompted for the server
 try {
     $remoteTarget = "{0}@{1}:/tmp/studo-quick-deploy.sh" -f $VpsUser, $VpsIp
     & scp -o StrictHostKeyChecking=no "$tmp" "$remoteTarget"
-    & ssh -o StrictHostKeyChecking=no ("{0}@{1}" -f $VpsUser, $VpsIp) "bash -lc 'bash /tmp/studo-quick-deploy.sh && rm -f /tmp/studo-quick-deploy.sh'"
+    # Normalize line endings before execution to avoid CRLF issues
+    & ssh -o StrictHostKeyChecking=no ("{0}@{1}" -f $VpsUser, $VpsIp) "bash -lc 'tr -d \r </tmp/studo-quick-deploy.sh > /tmp/studo-quick-deploy.lf && bash /tmp/studo-quick-deploy.lf && rm -f /tmp/studo-quick-deploy.sh /tmp/studo-quick-deploy.lf'"
     Write-Ok "Remote update completed"
 }
 catch {

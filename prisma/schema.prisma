@@ -29,30 +29,31 @@ model ProductImage {
 }
 
 model Product {
-  id               Int            @id @default(autoincrement())
+  id               Int              @id @default(autoincrement())
   name             String
-  slug             String         @unique
+  slug             String           @unique
   description      String
   shortDescription String?
-  originalPrice    Decimal        @db.Decimal(10,2)
-  discountPrice    Decimal?       @db.Decimal(10,2)
-  isRecentlyAdded  Boolean        @default(false)
-  isFeatured       Boolean        @default(false)
-  isActive         Boolean        @default(true)
-  stockQuantity    Int            @default(0)
-  sku              String?        @unique
-  weight           Decimal?       @db.Decimal(8,3)
+  originalPrice    Decimal          @db.Decimal(10, 2)
+  discountPrice    Decimal?         @db.Decimal(10, 2)
+  isRecentlyAdded  Boolean          @default(false)
+  isFeatured       Boolean          @default(false)
+  isActive         Boolean          @default(true)
+  stockQuantity    Int              @default(0)
+  sku              String?          @unique
+  weight           Decimal?         @db.Decimal(8, 3)
   dimensions       String?
   seoTitle         String?
   seoDescription   String?
   seoKeywords      String?
-  sortOrder        Int            @default(0)
-  category         Category       @relation(fields: [categoryId], references: [id])
+  sortOrder        Int              @default(0)
+  category         Category         @relation(fields: [categoryId], references: [id])
   categoryId       Int
   images           ProductImage[]
   banners          DiscountBanner[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  orderItems       OrderItem[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 model DiscountBanner {
@@ -75,25 +76,25 @@ enum DeliveryOption {
 }
 
 model Order {
-  id             Int           @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   customerName   String
   whatsappNumber String
   deliveryOption DeliveryOption
-  deliveryFee    Decimal       @db.Decimal(10,2)
+  deliveryFee    Decimal        @db.Decimal(10, 2)
   items          OrderItem[]
-  totalPrice     Decimal       @db.Decimal(10,2)
+  totalPrice     Decimal        @db.Decimal(10, 2)
   note           String?
-  status         String        @default("pending")
-  createdAt      DateTime      @default(now())
+  status         String         @default("pending")
+  createdAt      DateTime       @default(now())
 }
 
 model OrderItem {
-  id          Int      @id @default(autoincrement())
-  order       Order    @relation(fields: [orderId], references: [id])
-  orderId     Int
-  product     Product  @relation(fields: [productId], references: [id])
-  productId   Int
-  quantity    Int      @default(1)
-  unitPrice   Decimal  @db.Decimal(10,2)
-  lineTotal   Decimal  @db.Decimal(10,2)
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int     @default(1)
+  unitPrice Decimal @db.Decimal(10, 2)
+  lineTotal Decimal @db.Decimal(10, 2)
 }
