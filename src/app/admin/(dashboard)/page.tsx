@@ -1,27 +1,8 @@
-import { prisma } from '@/lib/db'
-
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
-export default async function AdminHome() {
-  const [products, categories, banners] = await Promise.all([
-    prisma.product.count(),
-    prisma.category.count(),
-    prisma.discountBanner.count(),
-  ])
+export default function AdminHome() {
   return (
-    <div className="grid md:grid-cols-3 gap-4">
-      <div className="p-4 rounded-md bg-white shadow">
-        <div className="text-sm text-gray-500">Products</div>
-        <div className="text-3xl font-bold">{products}</div>
-      </div>
-      <div className="p-4 rounded-md bg-white shadow">
-        <div className="text-sm text-gray-500">Categories</div>
-        <div className="text-3xl font-bold">{categories}</div>
-      </div>
-      <div className="p-4 rounded-md bg-white shadow">
-        <div className="text-sm text-gray-500">Banners</div>
-        <div className="text-3xl font-bold">{banners}</div>
-      </div>
-    </div>
+    <div className="p-6 bg-white rounded shadow">Admin is up</div>
   )
 }
