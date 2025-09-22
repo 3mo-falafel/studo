@@ -70,7 +70,7 @@ catch {
     exit 1
 }
 
-# 2) Prepare remote deployment script content (single-quoted here-string, placeholders)
+# 2) Prepare remote deployment script content
 $remoteScript = @'
 set -e
 REPO_URL="__REPO_URL__"
@@ -129,21 +129,23 @@ $remoteScript = $remoteScript.Replace('__APP_DIR__', $AppDir)
 $remoteScript = $remoteScript.Replace('__APP_NAME__', $AppName)
 $remoteScript = $remoteScript.Replace('__BRANCH__', $Branch)
 
-# 3) Ship and run remote script
+# Write to a local temp file, copy via scp, then run via ssh
+$tmp = [System.IO.Path]::GetTempFileName()
+Set-Content -LiteralPath $tmp -Value $remoteScript -Encoding ASCII
+
 Write-Info "Deploying to $VpsUser@$VpsIp ... (you may be prompted for the server password)"
 try {
-    $sshCmd = @"
-ssh -o StrictHostKeyChecking=no $VpsUser@$VpsIp bash -lc 'cat > /tmp/studo-quick-deploy.sh <<\'EOF\'
-$remoteScript
-EOF
-bash /tmp/studo-quick-deploy.sh && rm -f /tmp/studo-quick-deploy.sh'
-"@
-    iex $sshCmd
+    $remoteTarget = "{0}@{1}:/tmp/studo-quick-deploy.sh" -f $VpsUser, $VpsIp
+    & scp -o StrictHostKeyChecking=no "$tmp" "$remoteTarget"
+    & ssh -o StrictHostKeyChecking=no ("{0}@{1}" -f $VpsUser, $VpsIp) "bash -lc 'bash /tmp/studo-quick-deploy.sh && rm -f /tmp/studo-quick-deploy.sh'"
     Write-Ok "Remote update completed"
 }
 catch {
     Write-Err "Remote deployment failed: $($_.Exception.Message)"
     exit 1
+}
+finally {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
 }
 
 Write-Ok "All done. If you use Nginx, reload it if needed: sudo nginx -t && sudo systemctl reload nginx"
