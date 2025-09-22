@@ -91,7 +91,7 @@ if [ -d "$APP_DIR/.git" ]; then
 else
   cd /var/www
   rm -rf "$APP_DIR" 2>/dev/null || true
-  git clone "$REPO_URL" "$(basename "$APP_DIR")"
+  git clone "$REPO_URL" "$APP_DIR"
   cd "$APP_DIR"
 fi
 
