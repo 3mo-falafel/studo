@@ -68,3 +68,32 @@ model DiscountBanner {
   productId Int?
   createdAt DateTime @default(now())
 }
+
+enum DeliveryOption {
+  PICKUP
+  HOME_DELIVERY
+}
+
+model Order {
+  id             Int           @id @default(autoincrement())
+  customerName   String
+  whatsappNumber String
+  deliveryOption DeliveryOption
+  deliveryFee    Decimal       @db.Decimal(10,2)
+  items          OrderItem[]
+  totalPrice     Decimal       @db.Decimal(10,2)
+  note           String?
+  status         String        @default("pending")
+  createdAt      DateTime      @default(now())
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     Int
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   Int
+  quantity    Int      @default(1)
+  unitPrice   Decimal  @db.Decimal(10,2)
+  lineTotal   Decimal  @db.Decimal(10,2)
+}
