@@ -39,15 +39,15 @@ If you're interested in having a professional website developed at affordable pr
 
 ## 📋 Features
 
-- Modern responsive e-commerce design
-- Product catalog with search functionality
-- Shopping cart and wishlist
-- User authentication pages
-- Contact forms and customer support
-- Professional UI components
-- Mobile-first responsive design
-- SEO optimized structure
 
----
+## Branding Updates
+
+Branding customized to Studo.ps
+
+- Updated brand colors to Studo.ps teal palette via Tailwind `blue` overrides.
+- Header now displays Studo.ps logo and name.
+- Added decorative wavy background and smooth scroll‑reveal animations.
+- To swap the logo, place a file at `public/images/logo/studo-ps-logo.png`.
+
 
 *This website demonstrates the quality and professionalism that Jibreel Bornat brings to every web development project. Contact today for your custom website solution!*

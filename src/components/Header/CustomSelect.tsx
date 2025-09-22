@@ -16,19 +16,17 @@ const CustomSelect = ({ options }) => {
   useEffect(() => {
     // closing modal while clicking outside
     function handleClickOutside(event) {
-      if (!event.target.closest(".dropdown-content")) {
-        toggleDropdown();
+      if (isOpen && !event.target.closest(".dropdown-content")) {
+        setIsOpen(false);
       }
     }
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
 
   return (
     <div className="dropdown-content custom-select relative" style={{ width: "200px" }}>
@@ -41,7 +39,9 @@ const CustomSelect = ({ options }) => {
         {selectedOption.label}
       </div>
       <div className={`select-items ${isOpen ? "" : "select-hide"}`}>
-        {options.slice(1, -1).map((option, index) => (
+        {options
+          .filter((option) => option.value !== selectedOption.value)
+          .map((option, index) => (
           <div
             key={index}
             onClick={() => handleOptionClick(option)}

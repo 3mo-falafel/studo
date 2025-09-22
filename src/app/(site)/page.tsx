@@ -2,8 +2,9 @@ import Home from "@/components/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "JibShop | Professional E-commerce Solutions by Jibreel Bornat",
-  description: "Professional e-commerce website developed by Jibreel Bornat. Contact for affordable web development services.",
+  title: "Studo.ps | Smart Shopping Experience",
+  description:
+    "Studo.ps brings a clean, modern shopping experience with performance and thoughtful UX.",
   // other metadata
 };
 

@@ -7,13 +7,11 @@ import BestSeller from "./BestSeller";
 import CounDown from "./Countdown";
 import Testimonials from "./Testimonials";
 import Newsletter from "../Common/Newsletter";
-import ContactBanner from "../Common/ContactBanner";
 
 const Home = () => {
   return (
     <main>
       <Hero />
-      <ContactBanner />
       <Categories />
       <NewArrival />
       <PromoBanner />

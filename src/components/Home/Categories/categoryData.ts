@@ -1,43 +1,57 @@
 const data = [
   {
-    title: "Televisions",
+    title: "iPad Accessories",
     id: 1,
-    img: "/images/categories/categories-01.png",
-  },
-  {
-    title: "Laptop & PC",
-    id: 2,
-    img: "/images/categories/categories-02.png",
-  },
-  {
-    title: "Mobile & Tablets",
-    id: 3,
     img: "/images/categories/categories-03.png",
+    slug: "ipad-accessories",
   },
   {
-    title: "Games & Videos",
-    id: 4,
-    img: "/images/categories/categories-04.png",
-  },
-  {
-    title: "Home Appliances",
-    id: 5,
-    img: "/images/categories/categories-05.png",
-  },
-  {
-    title: "Health & Sports",
-    id: 6,
-    img: "/images/categories/categories-06.png",
-  },
-  {
-    title: "Watches",
-    id: 7,
+    title: "Bags",
+    id: 2,
     img: "/images/categories/categories-07.png",
+    slug: "bags",
   },
   {
-    title: "Televisions",
-    id: 8,
-    img: "/images/categories/categories-04.png",
+    title: "AirPods and Speakers",
+    id: 3,
+    img: "/images/categories/categories-06.png",
+    slug: "airpods-and-speakers",
+  },
+  {
+    title: "Phone Accessories",
+    id: 4,
+    img: "/images/categories/categories-03.png",
+    slug: "phone-accessories",
+  },
+  {
+    title: "Computer Accessories",
+    id: 5,
+    img: "/images/categories/categories-02.png",
+    slug: "computer-accessories",
+  },
+  {
+    title: "Chargers",
+    id: 6,
+    img: "/images/categories/categories-05.png",
+    slug: "chargers",
+  },
+  {
+    title: "Hard Disks",
+    id: 7,
+    img: "/images/categories/categories-02.png",
+    slug: "hard-disks",
+  },
+  {
+    title: "Printed Stuff",
+    id: 9,
+    img: "/images/categories/categories-01.png",
+    slug: "printed-stuff",
+  },
+  {
+    title: "Gift Packages",
+    id: 10,
+    img: "/images/categories/categories-07.png",
+    slug: "gift-packages",
   },
 ];
 

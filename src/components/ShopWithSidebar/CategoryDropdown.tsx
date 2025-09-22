@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 
+import Link from "next/link";
+
 const CategoryItem = ({ category }) => {
   const [selected, setSelected] = useState(false);
   return (
-    <button
+    <Link
+      href={`/categories/${category.slug}`}
       className={`${
         selected && "text-blue"
       } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
@@ -45,7 +48,7 @@ const CategoryItem = ({ category }) => {
       >
         {category.products}
       </span>
-    </button>
+    </Link>
   );
 };
 

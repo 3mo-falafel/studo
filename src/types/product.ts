@@ -4,6 +4,8 @@ export type Product = {
   price: number;
   discountedPrice: number;
   id: number;
+  // Slug of the category this product belongs to, e.g. "ipad-accessories"
+  categorySlug?: string;
   imgs?: {
     thumbnails: string[];
     previews: string[];

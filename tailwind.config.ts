@@ -21,7 +21,7 @@ const config: Config = {
         xl: "0",
       },
     },
-    colors: {
+  colors: {
       current: "currentColor",
       transparent: "transparent",
       white: "#FFFFFF",
@@ -50,14 +50,17 @@ const config: Config = {
         6: "#6B7280",
         7: "#374151",
       },
+      // Brand palette (Studo.ps teal)
+      // We override the existing 'blue' key to keep utility classes working
+      // without sweeping refactors across the codebase.
       blue: {
-        DEFAULT: "#3C50E0",
-        dark: "#1C3FB7",
-        light: "#5475E5",
-        "light-2": "#8099EC",
-        "light-3": "#ADBCF2",
-        "light-4": "#C3CEF6",
-        "light-5": "#E1E8FF",
+        DEFAULT: "#1D6F72", // brand primary
+        dark: "#134A4C", // deeper shade
+        light: "#2E8D91",
+        "light-2": "#5BAEB1",
+        "light-3": "#8FCBCC",
+        "light-4": "#BFE2E3",
+        "light-5": "#E4F3F3",
       },
       red: {
         DEFAULT: "#F23030",
@@ -241,7 +244,7 @@ const config: Config = {
           "0px 0px 1px 0px rgba(33, 37, 41, 0.08), 0px 2px 2px 0px rgba(33, 37, 41, 0.06)",
         filter: "0px 1px 0px 0px #E5E7EB",
         list: "1px 0px 0px 0px #E5E7EB",
-        input: "inset 0 0 0 2px #3C50E0",
+        input: "inset 0 0 0 2px #1D6F72",
       },
     },
   },

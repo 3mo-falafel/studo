@@ -1,11 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
 import CategoryDropdown from "./CategoryDropdown";
-import GenderDropdown from "./GenderDropdown";
-import SizeDropdown from "./SizeDropdown";
-import ColorsDropdwon from "./ColorsDropdwon";
 import PriceDropdown from "./PriceDropdown";
 import shopData from "../Shop/shopData";
 import SingleGridItem from "../Shop/SingleGridItem";
@@ -15,6 +13,9 @@ const ShopWithSidebar = () => {
   const [productStyle, setProductStyle] = useState("grid");
   const [productSidebar, setProductSidebar] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams?.get("category") || "";
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState(initialCategory);
 
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
@@ -31,52 +32,24 @@ const ShopWithSidebar = () => {
   ];
 
   const categories = [
-    {
-      name: "Desktop",
-      products: 10,
-      isRefined: true,
-    },
-    {
-      name: "Laptop",
-      products: 12,
-      isRefined: false,
-    },
-    {
-      name: "Monitor",
-      products: 30,
-      isRefined: false,
-    },
-    {
-      name: "UPS",
-      products: 23,
-      isRefined: false,
-    },
-    {
-      name: "Phone",
-      products: 10,
-      isRefined: false,
-    },
-    {
-      name: "Watch",
-      products: 13,
-      isRefined: false,
-    },
+    { name: "iPad Accessories", slug: "ipad-accessories", products: 0, isRefined: false },
+    { name: "Bags", slug: "bags", products: 0, isRefined: false },
+    { name: "AirPods and Speakers", slug: "airpods-and-speakers", products: 0, isRefined: false },
+    { name: "Phone Accessories", slug: "phone-accessories", products: 0, isRefined: false },
+    { name: "Computer Accessories", slug: "computer-accessories", products: 0, isRefined: false },
+    { name: "Chargers", slug: "chargers", products: 0, isRefined: false },
+    { name: "Hard Disks", slug: "hard-disks", products: 0, isRefined: false },
+    { name: "Printed Stuff", slug: "printed-stuff", products: 0, isRefined: false },
+    { name: "Gift Packages", slug: "gift-packages", products: 0, isRefined: false },
   ];
 
-  const genders = [
-    {
-      name: "Men",
-      products: 10,
-    },
-    {
-      name: "Women",
-      products: 23,
-    },
-    {
-      name: "Unisex",
-      products: 8,
-    },
-  ];
+  useEffect(() => {
+    // if category query changes via navigation/hard refresh
+    const slug = searchParams?.get("category") || "";
+    setSelectedCategorySlug(slug);
+  }, [searchParams]);
+
+  // Removed gender/size/colors filters as requested
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
@@ -159,14 +132,7 @@ const ShopWithSidebar = () => {
                   {/* <!-- category box --> */}
                   <CategoryDropdown categories={categories} />
 
-                  {/* <!-- gender box --> */}
-                  <GenderDropdown genders={genders} />
-
-                  {/* // <!-- size box --> */}
-                  <SizeDropdown />
-
-                  {/* // <!-- color box --> */}
-                  <ColorsDropdwon />
+                  {/* Removed Gender, Size, and Colors filters */}
 
                   {/* // <!-- price range box --> */}
                   <PriceDropdown />
